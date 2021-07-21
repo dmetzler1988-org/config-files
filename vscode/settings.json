@@ -1,0 +1,157 @@
+{
+    // ###############################################################
+    // Default
+    // ###############################################################
+
+    // Variablenwerte beim Debuggen in Editor eingebunden anzeigen
+    "debug.inlineValues": true,
+    // Versteckt den Toggler für "Geöffnete Editoren"
+    // im Explorer.
+    "explorer.openEditors.visible": 0,
+    // Automatisches Speichern beim Fokusverlust vom Editor.
+    "files.autoSave": "onFocusChange",
+    // Bei Aktivierung wird beim Speichern einer Datei eine
+    // abschließende neue Zeile am Dateiende eingefügt.
+    "files.insertFinalNewline": true,
+    // Bei Aktivierung werden nachgestellte Leerzeichen beim Speichern
+    // einer Datei gekürzt.
+    "files.trimTrailingWhitespace": true,
+    "files.associations": {
+        "*.log.*": "log",
+        "*log": "log",
+        "*log.*": "log"
+    },
+    "[markdown]": {
+        "files.trimTrailingWhitespace": false
+    },
+    // Aktiviert Absturzberichte, die an Microsoft gesendet werden.
+    // Diese Option erfordert einen Neustart, damit sie wirksam wird.
+    "telemetry.enableCrashReporter": false,
+    // Aktivieren Sie das Senden von Nutzungsdaten und Fehlern an Microsoft.
+    "telemetry.enableTelemetry": false,
+    // Passt an, welche Terminalanwendung unter OS X ausgeführt werden soll.
+    "terminal.external.osxExec": "iTerm.app",
+    // Neues Fenster wird maximiert geöffnet.
+    "window.newWindowDimensions": "maximized",
+    // Die Ordner werden in einem neuen Fenster geöffnet.
+    "window.openFoldersInNewWindow": "on",
+    // Startet ohne Editor.
+    "workbench.startupEditor": "none",
+    // Display syntax highlighting for file with lines to XY.
+    "editor.maxTokenizationLineLength": 2000000,
+
+    // Formatter
+    "[javascript]": {
+        "editor.defaultFormatter": "lonefy.vscode-JS-CSS-HTML-formatter"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+
+    // ###############################################################
+    // Document This
+    // ###############################################################
+
+    // When docthis.includeAuthorTag is enabled, will add @author tag with this value.
+    "docthis.authorName": "dmetzler1988",
+
+    // ###############################################################
+    // NPM Intellisense
+    // ###############################################################
+
+    // Scans devDependencies as well
+    "npm-intellisense.scanDevDependencies": true,
+
+    // ###############################################################
+    // Run Code
+    // ###############################################################
+
+    "code-runner.runInTerminal": true,
+
+    // ###############################################################
+    // Themes
+    // ###############################################################
+
+    "workbench.colorTheme": "Material Theme Darker High Contrast",
+    "workbench.iconTheme": "eq-material-theme-icons-darker",
+
+    "editor.tokenColorCustomizations": {
+        "[Material Theme Darker High Contrast]": {
+            "textMateRules": [
+                {
+                    "scope": [
+                        "comment",
+                        "comment punctuation.definition.comment"
+                    ],
+                    "settings": {
+                        "foreground": "#6a9955"
+                    }
+                }
+            ]
+        },
+    },
+
+    // ###############################################################
+    // TODO Highlight
+    // ###############################################################
+
+    // Specify whether the keywords are case sensitive or not
+    "todohighlight.isCaseSensitive": false,
+
+    // ###############################################################
+    // todo-tree configuration
+    // ###############################################################
+
+    // Set to true if you want the tree to be initially expanded
+    "todo-tree.tree.expanded": true,
+    // Set to true to show a flat list of files
+    "todo-tree.tree.flat": true,
+    "todo-tree.highlights.customHighlight": {
+        "TODO": {},
+        "FIXME": {}
+    },
+    "todo-tree.highlights.defaultHighlight": {
+        "foreground": "green",
+        "type": "none"
+    },
+    "todo-tree.tree.showScanModeButton": false,
+
+    // ###############################################################
+    // GitLens
+    // ###############################################################
+
+    "gitlens.advanced.messages": {
+        "suppressCommitHasNoPreviousCommitWarning": false,
+        "suppressCommitNotFoundWarning": false,
+        "suppressFileNotUnderSourceControlWarning": false,
+        "suppressGitVersionWarning": false,
+        "suppressLineUncommittedWarning": false,
+        "suppressNoRepositoryWarning": false,
+        "suppressResultsExplorerNotice": false,
+        "suppressShowKeyBindingsNotice": true
+    },
+    "gitlens.views.fileHistory.enabled": true,
+    "gitlens.views.lineHistory.enabled": true,
+
+    // ###############################################################
+    // Projects+
+    // ###############################################################
+
+    "projects.configPath": "~/.vscode/vscode_projects.json",
+    "launch": {},
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+
+    // ###############################################################
+    // GitHub Gist Explorer+
+    // ###############################################################
+
+    "GithubGistExplorer.explorer.gistSortBy": "Last Updated",
+    "GithubGistExplorer.explorer.subscriptionSortBy": "Last Updated",
+    "GithubGistExplorer.explorer.subscriptionAscending": false,
+    "GithubGistExplorer.explorer.subscriptions": [],
+    "GithubGistExplorer.github.token": "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",
+    "GithubGistExplorer.github.username": "dmetzler1988",
+    "GithubGistExplorer.explorer.gistAscending": false,
+}

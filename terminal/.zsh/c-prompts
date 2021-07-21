@@ -1,0 +1,5 @@
+# CHANGE PROMPT (user@host ~ path (gitinfo))
+local ret_status="%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ %s)"
+
+# oh-my-zsh prompt
+PROMPT='%{$fg[white]%}%* ${ret_status}%{$fg_bold[green]%}%p %n@%m ~ %{$fg[yellow]%}%d %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} : % %{$reset_color%}'

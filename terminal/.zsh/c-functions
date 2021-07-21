@@ -1,0 +1,162 @@
+# dbbolton's zsh functions
+# github.com/dbb
+
+# A ---------------------------------- A --------------------------------- A #
+
+# B ---------------------------------- B --------------------------------- B #
+
+# C ---------------------------------- C --------------------------------- C #
+
+# D ---------------------------------- D --------------------------------- D #
+
+# E ---------------------------------- E --------------------------------- E #
+
+# F ---------------------------------- F --------------------------------- F #
+
+file_list () {
+    if [[ -n $1 ]]; then
+        print '${(f)"$('"$1"')"}'
+    else
+        print '${(f)"$(COMMAND)"}'
+    fi
+}
+
+## test your font
+font_test () {
+    print "Letters:\tAaBbCcDdEeFfGgHhIiJjKkLlMm"
+    print "\t\tNnOoPpQqRrSsTtUuVvWwXxYyZz"
+    print "Digits:\t\t0123456789"
+    print "Brackets:\t( ) [ ] { } < > "
+    print "Quotes:\t\t\"foo\" 'bar' "
+    print "Punctuation: \t, . ? : ; _ ! "
+    print "Symbols:\t\` ~  @ # $ % ^ & * - + = | / \\"
+    print "Ambiguity:\t1Il ij ao DO0Q B8 \`\`''\" ({ ,. ;: "
+}
+
+# G ---------------------------------- G --------------------------------- G #
+
+### git ################################
+
+## commit and push
+gcpm () {
+    git commit -m "$1"
+    git push -u origin master
+}
+
+## "generic update file"
+guf () {
+    file=$1
+    git add $file
+    git commit -m "Update ${file}"
+    git push -u origin master
+}
+
+### github stuff ###
+
+## empty_gh [NAME_OF_REPO]
+##
+## Use this when creating a new repo from scratch.
+empty_gh() { # [NAME_OF_REPO]
+    repo=$1
+    ghuser=$( git config github.user )
+
+    curl -F login=${ghuser} -F token=$( git config github.token ) \
+        https://github.com/api/v2/yaml/repos/create -F name=${repo}
+    [[ ! -d $repo ]] && mkdir "$repo"
+    cd "$repo"
+    git init
+    print '.*'"\n"'*~' >> .gitignore
+    [[ ! -f README.md ]] && readme
+    git add ^.*
+    git commit -m 'Initial commit.'
+    git remote add origin git@github.com:${ghuser}/${repo}.git
+    git push -u origin master
+}
+
+## new_gh [DIRECTORY]
+##
+## Use this when you have a directory that is not yet set up for git.
+## This function will add all non-hidden files to git.
+new_gh() { # [DIRECTORY]
+    repo=$1
+    ghuser=$( git config github.user )
+
+    [[ ! -d $repo ]] && print "No such directory: '$repo'\nMaybe you meant to "\
+        "use\n\nempty_gh()\n" && exit 1
+    cd "$repo"
+
+    repo_status=$( curl -sL http://github.com/${ghuser}/${repo} | grep '<title>404' )
+    if [[ -n $repo_status ]]; then
+        curl -F login=${ghuser} -F token=$( git config github.token ) \
+            https://github.com/api/v2/yaml/repos/create -F name=${repo}
+        print "Repo created"
+    fi
+
+    git init
+    # add all non-dot files
+    print '.*'"\n"'*~' >> .gitignore
+    [[ ! -f README.md ]] && readme
+    git add ^.*
+    git commit -m 'Initial commit.'
+    git remote add origin git@github.com:${ghuser}/${repo}.git
+    git push -u origin master
+}
+
+## make a generic gitignore
+gitig () {
+    print "*.swp\n*~*" >> .gitignore
+}
+
+# H ---------------------------------- H --------------------------------- H #
+
+# I ---------------------------------- I --------------------------------- I #
+
+# J ---------------------------------- J --------------------------------- J #
+
+# K ---------------------------------- K --------------------------------- K #
+
+# L ---------------------------------- L --------------------------------- L #
+
+# M ---------------------------------- M --------------------------------- M #
+
+# Make a dir and cd into it
+mdc () {
+    mkdir -p $1
+    cd $1
+}
+
+# N ---------------------------------- N --------------------------------- N #
+
+# O ---------------------------------- O --------------------------------- O #
+
+# P ---------------------------------- P --------------------------------- P #
+
+# Q ---------------------------------- Q --------------------------------- Q #
+
+## quick find
+qf () {
+    find . -maxdepth 2 -iname "*$1*"
+}
+
+# R ---------------------------------- R --------------------------------- R #
+
+# S ---------------------------------- S --------------------------------- S #
+
+# T ---------------------------------- T --------------------------------- T #
+
+# U ---------------------------------- U --------------------------------- U #
+
+# unzip
+uz () { # [archive] [dir]
+    unzip -x $1 -d $2
+}
+
+# V ---------------------------------- V --------------------------------- V #
+
+# W ---------------------------------- W --------------------------------- W #
+
+# X ---------------------------------- X --------------------------------- X #
+
+# Y ---------------------------------- Y --------------------------------- Y #
+
+# Z ---------------------------------- Z --------------------------------- Z #

@@ -151,7 +151,7 @@
     "GithubGistExplorer.explorer.subscriptionSortBy": "Last Updated",
     "GithubGistExplorer.explorer.subscriptionAscending": false,
     "GithubGistExplorer.explorer.subscriptions": [],
-    "GithubGistExplorer.github.token": "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",
-    "GithubGistExplorer.github.username": "dmetzler1988",
+    "GithubGistExplorer.github.token": "token",
+    "GithubGistExplorer.github.username": "username",
     "GithubGistExplorer.explorer.gistAscending": false,
 }

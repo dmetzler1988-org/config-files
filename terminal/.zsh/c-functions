@@ -1,3 +1,5 @@
+#!/bin/zsh
+
 # dbbolton's zsh functions
 # github.com/dbb
 
@@ -7,7 +9,94 @@
 
 # C ---------------------------------- C --------------------------------- C #
 
+# Color tests
+color_test () {
+    printGreenBlock "Foreground colors"
+    print "$vColorBgWhite $vColorFgBlack Black  $vColorReset" # first code is background, second code is font-color
+    print "$vColorFgRed  Red$vColorReset"
+    print "$vColorFgGreen  Green$vColorReset"
+    print "$vColorFgBrown  Brown$vColorReset"
+    print "$vColorFgBlue  Blue$vColorReset"
+    print "$vColorFgPurple  Purple$vColorReset"
+    print "$vColorFgCyan  Cyan$vColorReset"
+    print "$vColorFgLightGray  Light Gray$vColorReset"
+    print "$vColorFgDarkGray  Dark Gray$vColorReset"
+    print "$vColorFgLightRed  Light Red$vColorReset"
+    print "$vColorFgLightGreen  Light Green$vColorReset"
+    print "$vColorFgYellow  Yellow$vColorReset"
+    print "$vColorFgLightBlue  Light Blue$vColorReset"
+    print "$vColorFgLightPurple  Light Purple$vColorReset"
+    print "$vColorFgLightCyan  Light Cyan$vColorReset"
+    print "$vColorFgWhite  White$vColorReset"
+
+    printGreenBlock "Background colors"
+     # first code is background, second code is font-color - if 0;37, then remove the 0;
+    print "$vColorBgBlack $vColorFgWhite Black  $vColorReset"
+    print "$vColorBgRed $vColorFgWhite Red  $vColorReset"
+    print "$vColorBgGreen $vColorFgWhite Green  $vColorReset"
+    print "$vColorBgYellow $vColorFgBlack Yellow  $vColorReset"
+    print "$vColorBgBlue $vColorFgWhite Blue  $vColorReset"
+    print "$vColorBgMagenta $vColorFgWhite Magenta  $vColorReset"
+    print "$vColorBgCyan $vColorFgBlack Cyan  $vColorReset"
+    print "$vColorBgWhite $vColorFgBlack White  $vColorReset"
+}
+
+## docker-compose
+### compose up container
+cuc () {
+    dockerAvailableCheck
+    printInfo "docker compose build and start containers"
+    docker compose up --build -d --force-recreate
+}
+### compose down container
+cdc () {
+    dockerAvailableCheck
+    local withoutCleanup=$1
+    withoutCleanup=$([ -z $withoutCleanup ] && echo "false" || echo "true")
+
+    printInfo "docker compose stop"
+    docker compose down --remove-orphans && docker container prune -f
+
+    if [ withoutCleanup = "false" ]
+    then
+        ccl
+    fi
+}
+# compose cleanup
+ccl () {
+    dockerAvailableCheck
+    printInfo "docker cleanup (images and builder)"
+    docker image prune --filter="dangling=true" --force
+    docker builder prune -f
+}
+
+## compose-up functions
+### Local Base Setup start
+cubase () {
+    dockerAvailableCheck
+    local currFolder=$(pwd)
+    startContainer $vRabbitmqPath "rabbitmq-broker"
+    startContainer $vMsLogPath "microservice-log-web"
+    cd "$currFolder"
+}
+### Local Base Setup stop
+cdbase () {
+    dockerAvailableCheck
+    local currFolder=$(pwd)
+    stopContainer $vMsLogPath "microservice-log-web"
+    stopContainer $vRabbitmqPath "rabbitmq-broker"
+    ccl
+    cd "$currFolder"
+}
+
 # D ---------------------------------- D --------------------------------- D #
+
+dockerAvailableCheck () {
+    if ! docker info > /dev/null 2>&1; then
+        printAlert "This script uses docker, and it isn't running - please start docker and try again!"
+        exit 1
+    fi
+}
 
 # E ---------------------------------- E --------------------------------- E #
 
@@ -23,6 +112,7 @@ file_list () {
 
 ## test your font
 font_test () {
+    printGreenBlock "Font tests"
     print "Letters:\tAaBbCcDdEeFfGgHhIiJjKkLlMm"
     print "\t\tNnOoPpQqRrSsTtUuVvWwXxYyZz"
     print "Digits:\t\t0123456789"
@@ -31,6 +121,15 @@ font_test () {
     print "Punctuation: \t, . ? : ; _ ! "
     print "Symbols:\t\` ~  @ # $ % ^ & * - + = | / \\"
     print "Ambiguity:\t1Il ij ao DO0Q B8 \`\`''\" ({ ,. ;: "
+
+    printGreenBlock "Font attributes"
+    print "  \033[1mBold$vColorReset"
+    print "  \033[2mDim$vColorReset"
+    print "  \033[3mItalic$vColorReset"
+    print "  \033[4mUnderscore$vColorReset"
+    print "  \033[5mBlink on$vColorReset"
+    print "  \033[7mReverse$vColorReset"
+    print "  \033[8mInvisible$vColorReset"
 }
 
 # G ---------------------------------- G --------------------------------- G #
@@ -45,7 +144,7 @@ gcpm () {
 
 ## "generic update file"
 guf () {
-    file=$1
+    local file=$1
     git add $file
     git commit -m "Update ${file}"
     git push -u origin master
@@ -57,8 +156,8 @@ guf () {
 ##
 ## Use this when creating a new repo from scratch.
 empty_gh() { # [NAME_OF_REPO]
-    repo=$1
-    ghuser=$( git config github.user )
+    local repo=$1
+    local ghuser=$( git config github.user )
 
     curl -F login=${ghuser} -F token=$( git config github.token ) \
         https://github.com/api/v2/yaml/repos/create -F name=${repo}
@@ -78,14 +177,14 @@ empty_gh() { # [NAME_OF_REPO]
 ## Use this when you have a directory that is not yet set up for git.
 ## This function will add all non-hidden files to git.
 new_gh() { # [DIRECTORY]
-    repo=$1
-    ghuser=$( git config github.user )
+    local repo=$1
+    local ghuser=$( git config github.user )
 
     [[ ! -d $repo ]] && print "No such directory: '$repo'\nMaybe you meant to "\
         "use\n\nempty_gh()\n" && exit 1
     cd "$repo"
 
-    repo_status=$( curl -sL http://github.com/${ghuser}/${repo} | grep '<title>404' )
+    local repo_status=$( curl -sL http://github.com/${ghuser}/${repo} | grep '<title>404' )
     if [[ -n $repo_status ]]; then
         curl -F login=${ghuser} -F token=$( git config github.token ) \
             https://github.com/api/v2/yaml/repos/create -F name=${repo}
@@ -131,6 +230,47 @@ mdc () {
 
 # P ---------------------------------- P --------------------------------- P #
 
+## print block
+printGreenBlock () {
+    local content=$1
+    print "$vColorFgGreen###############################$vColorReset"
+    print "$vColorFgGreen### "${content}"$vColorReset"
+    print "$vColorFgGreen###############################$vColorReset"
+}
+printYellowBlock () {
+    local content=$1
+    print "$vColorFgYellow###############################$vColorReset"
+    print "$vColorFgYellow### "${content}"$vColorReset"
+    print "$vColorFgYellow###############################$vColorReset"
+}
+printRedBlock () {
+    local content=$1
+    print "\033[0;31m###############################$vColorReset"
+    print "\033[0;31m### "${content}"$vColorReset"
+    print "\033[0;31m###############################$vColorReset"
+}
+
+printNote () {
+    local content=$1
+    print "$vColorFgDarkGray  "${content}"$vColorReset"
+}
+printInfo () {
+    local content=$1
+    print "$vColorFgLightBlue  "${content}"$vColorReset"
+}
+printSuccess () {
+    local content=$1
+    print "$vColorFgGreen  "${content}"$vColorReset"
+}
+printWarning () {
+    local content=$1
+    print "$vColorFgYellow  "${content}"$vColorReset"
+}
+printAlert () {
+    local content=$1
+    print "\033[0;31m  "${content}"$vColorReset"
+}
+
 # Q ---------------------------------- Q --------------------------------- Q #
 
 ## quick find
@@ -142,7 +282,69 @@ qf () {
 
 # S ---------------------------------- S --------------------------------- S #
 
+## Docker Compose functions
+startContainer () {
+    local itemPath=$1
+    local container=$2
+    local runningContainer=0
+    local itemName=$(echo $itemPath | rev | cut -d '/' -f 1 | rev)
+
+    printGreenBlock "start $itemName"
+
+    local containerId=$(docker ps --filter "name=$container" --format "{{.ID}}")
+    if [ $containerId ]
+    then
+        if [ $(docker inspect -f '{{.State.Running}}' $containerId) = "true" ]
+        then
+            runningContainer=1
+            printWarning "$container already running"
+        fi
+    fi
+
+    if [ $runningContainer -eq 0 ]
+    then
+        cd $itemPath
+        cuc
+    fi
+}
+
+stopContainer () {
+    local itemPath=$1
+    local container=$2
+    local stopedContainer=0
+    local itemName=$(echo $itemPath | rev | cut -d '/' -f 1 | rev)
+
+    printGreenBlock "stop $itemName"
+
+    local containerId=$(docker ps --filter "name=$container" --format "{{.ID}}")
+    if [ -z $containerId ] # check if empty
+    then
+        stopedContainer=1
+        printWarning "$container already stopped"
+    fi
+    if [ ! -z $containerId ]  # check if not empty
+    then
+        if [ $(docker inspect -f '{{.State.Running}}' $containerId) = "false" ]
+        then
+            stopedContainer=1
+            printWarning "$container already stopped"
+        fi
+    fi
+
+    if [ $stopedContainer -eq 0 ]
+    then
+        cd $itemPath
+        cdc "true"
+    fi
+}
+
 # T ---------------------------------- T --------------------------------- T #
+
+# Performance-analysis for zsh shell
+timezsh() {
+  shell=${1-$SHELL}
+  for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
+}
 
 # U ---------------------------------- U --------------------------------- U #
 

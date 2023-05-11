@@ -1,3 +1,5 @@
+#!/bin/zsh
+
 # antigen (needed for zsh-autosuggestions and zsh-syntax-highlighting)
 source /usr/local/share/antigen/antigen.zsh
 

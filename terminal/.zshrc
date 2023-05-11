@@ -70,7 +70,7 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git symfony2 npm composer brew docker docker-compose colored-man-pages colorize)
+plugins=(git macos symfony2 npm composer brew docker docker-compose kubectl helm colored-man-pages colorize)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -102,7 +102,7 @@ source $ZSH/oh-my-zsh.sh
 
 ## source external files
 ext_dir="$HOME/.zsh"
-ext_files=( c-plugins c-aliases c-functions c-keys c-prompts )
+ext_files=( c-configs c-plugins c-variables c-aliases c-functions c-keys c-prompts c-exports )
 for file in $ext_files; do
     [[ -f ${ext_dir}/${file} ]] && source ${ext_dir}/${file}
 done

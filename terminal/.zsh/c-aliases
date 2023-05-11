@@ -1,4 +1,4 @@
-# ALIASES
+#!/bin/zsh
 
 ## System
 alias ll='ls -alFh'
@@ -39,9 +39,10 @@ alias c='XDEBUG_MODE=off composer'
 alias composer='XDEBUG_MODE=off composer'
 
 ## Custom paths
-alias cdnginx='cd /usr/local/etc/nginx/'
+alias cpath='cd $vCustomPath'
 
 ## Custom commands
 alias openvsc='open -a "Visual Studio Code" $1' # open given file with Visual Studio Code
 alias zshreload='source ~/.zshrc' # reload ZSH
 alias grep='grep --color=auto' # colorize `grep` output
+alias dexec='docker exec -t -i'

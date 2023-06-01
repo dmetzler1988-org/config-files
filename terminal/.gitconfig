@@ -3,10 +3,10 @@
 
 # Main configurations
 [user]
-	name = <name>
-	email = <mail>
+    name = <name>
+    email = <mail>
 [core]
-	fileMode = false
+    fileMode = false
 
 # Color configurations
 [color]
@@ -43,7 +43,7 @@
 
 # Pager view settings (view in own page)
 [pager]
-	branch = false
+    branch = false
     status = false
     tag = false
 
@@ -204,4 +204,4 @@
     undo = "!f() { git reset --hard $(git rev-parse --abbrev-ref HEAD)@{${1-1}}; }; f"
 
 [credential]
-	helper = osxkeychain
+    helper = osxkeychain

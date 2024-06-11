@@ -8,3 +8,12 @@ export PATH="/usr/local/sbin:$PATH"
 # Set colors
 export LSCOLORS='exfxcxdxbxegedabagacad'
 export CLICOLOR=true
+
+# Load all kubernetes configs
+if [ -e $HOME/.kube/config ]; then
+    export KUBECONFIG=$HOME/.kube/config
+
+    if [ -d $HOME/.kube/configs ]; then
+        export KUBECONFIG=$HOME/.kube/config:"$(find $HOME/.kube/configs/kubeconfig* -type f -maxdepth 1 | tr '\n' ':' | sed 's/.$//')"
+    fi
+fi

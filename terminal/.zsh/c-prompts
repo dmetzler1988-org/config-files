@@ -5,3 +5,8 @@ local ret_status="%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ %s)"
 
 # oh-my-zsh prompt
 PROMPT='%{$fg[white]%}%* ${ret_status}%{$fg_bold[green]%}%p %n@%m ~ %{$fg[yellow]%}%d %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} : % %{$reset_color%}'
+
+# zsh-kubectl-prompt from https://github.com/superbrothers/zsh-kubectl-prompt
+if [ -e ~/.kube/config ]; then
+    RPROMPT='%{$fg[vColorFgLightGray]%}($ZSH_KUBECTL_PROMPT)%{$reset_color%}'
+fi

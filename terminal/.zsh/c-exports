@@ -1,4 +1,10 @@
 #!/bin/zsh
 
+# Disable homebrew analytics - https://docs.brew.sh/Analytics
+export HOMEBREW_NO_ANALYTICS=1
+# Export for homebrew
+export PATH="/usr/local/sbin:$PATH"
+
+# Set colors
 export LSCOLORS='exfxcxdxbxegedabagacad'
 export CLICOLOR=true

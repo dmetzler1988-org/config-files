@@ -1,15 +1,15 @@
 #!/bin/zsh
 
-## System
+# System -------------------------- System -------------------------- System #
 alias ll='ls -alFh'
 alias la='ls -A'
 alias l='ls -CF'
 alias cx='chmod u+x'
 
 ## clear history
-alias hclear="rm $HISTFILE"
+alias hclear='rm $HISTFILE'
 
-## Git
+# Git ------------------------------ Git ------------------------------- Git #
 ## for more take a look to https://github.com/robbyrussell/oh-my-zsh/wiki/Cheatsheet
 alias gst='git status'
 alias ga='git add'
@@ -34,14 +34,14 @@ alias gf='git fetch'
 alias gfo='git fetch origin'
 alias gfp='git fetch --prune --prune-tags'
 
-## Composer
+# Composer ----------------------- Composer ----------------------- Composer #
 alias c='XDEBUG_MODE=off composer'
 alias composer='XDEBUG_MODE=off composer'
 
-## Custom paths
+# Custom paths ----------------- Custom paths ----------------- Custom paths #
 alias cpath='cd $vCustomPath'
 
-## Custom commands
+# Custom commands ------------ Custom commands ------------- Custom commands #
 alias openvsc='open -a "Visual Studio Code" $1' # open given file with Visual Studio Code
 alias zshreload='source ~/.zshrc' # reload ZSH
 alias grep='grep --color=auto' # colorize `grep` output

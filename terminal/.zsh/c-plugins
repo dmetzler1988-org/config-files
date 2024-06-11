@@ -1,11 +1,19 @@
 #!/bin/zsh
 
+# Only works on .zshrc
+#plugins=(git macos brew colored-man-pages colorize npm symfony2 composer docker docker-compose kubectl helm 1password)
+
 # antigen (needed for zsh-autosuggestions and zsh-syntax-highlighting)
-source /usr/local/share/antigen/antigen.zsh
+source $(brew --prefix)/share/antigen/antigen.zsh
 
 # zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions
-#antigen bundle zsh-users/zsh-autosuggestions
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# zsh-syntax-highlighting https://github.com/zsh-users/zsh-syntax-highlighting
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# zsh-history-substring-search https://github.com/zsh-users/zsh-history-substring-search
+source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 
 # This speeds up pasting w/ autosuggest
 # https://github.com/zsh-users/zsh-autosuggestions/issues/238#issuecomment-389324292
@@ -21,12 +29,6 @@ pastefinish() {
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
 
-# zsh-syntax-highlighting https://github.com/zsh-users/zsh-syntax-highlighting
-#antigen bundle zsh-users/zsh-syntax-highlighting
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# zsh-history-substring-search https://github.com/zsh-users/zsh-history-substring-search
-source /usr/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 # Mapping arrow keys
 bindkey '^[OA' history-substring-search-up
 bindkey '^[OB' history-substring-search-down

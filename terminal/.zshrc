@@ -102,7 +102,8 @@ source $ZSH/oh-my-zsh.sh
 
 ## source external files
 ext_dir="$HOME/.zsh"
-ext_files=( c-configs c-plugins c-variables c-aliases c-functions c-keys c-prompts c-exports )
-for file in $ext_files; do
-    [[ -f ${ext_dir}/${file} ]] && source ${ext_dir}/${file}
+for file in "$ext_dir"/*; do
+  if [ -f "$file" ] && [ "$file" != "$ext_dir/info.md" ]; then
+    source ${file}
+  fi
 done

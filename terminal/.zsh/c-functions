@@ -44,13 +44,17 @@ color_test () {
 ## docker-compose
 ### compose up container
 cuc () {
-    dockerAvailableCheck
+    if ! dockerAvailableCheck; then
+        return 1
+    fi
     printInfo "docker compose build and start containers"
     docker compose up --build -d --force-recreate
 }
 ### compose down container
 cdc () {
-    dockerAvailableCheck
+    if ! dockerAvailableCheck; then
+        return 1
+    fi
     local withoutCleanup=$1
     withoutCleanup=$([ -z $withoutCleanup ] && echo "false" || echo "true")
 
@@ -59,34 +63,23 @@ cdc () {
 
     if [ withoutCleanup = "false" ]
     then
+        print "run ccl"
         ccl
     fi
 }
 # compose cleanup
 ccl () {
-    dockerAvailableCheck
+    if ! dockerAvailableCheck; then
+        return 1
+    fi
     printInfo "docker cleanup (images and builder)"
     docker image prune --filter="dangling=true" --force
     docker builder prune -f
 }
-
-## compose-up functions
-### Local Base Setup start
-cubase () {
-    dockerAvailableCheck
-    local currFolder=$(pwd)
-    startContainer $vRabbitmqPath "rabbitmq-broker"
-    startContainer $vMsLogPath "microservice-log-web"
-    cd "$currFolder"
-}
-### Local Base Setup stop
-cdbase () {
-    dockerAvailableCheck
-    local currFolder=$(pwd)
-    stopContainer $vMsLogPath "microservice-log-web"
-    stopContainer $vRabbitmqPath "rabbitmq-broker"
-    ccl
-    cd "$currFolder"
+# compose restart
+crc () {
+    cdc
+    cuc
 }
 
 # D ---------------------------------- D --------------------------------- D #
@@ -94,8 +87,10 @@ cdbase () {
 dockerAvailableCheck () {
     if ! docker info > /dev/null 2>&1; then
         printAlert "This script uses docker, and it isn't running - please start docker and try again!"
-        exit 1
+        return 1
     fi
+
+    return 0
 }
 
 # E ---------------------------------- E --------------------------------- E #
@@ -139,7 +134,7 @@ font_test () {
 ## commit and push
 gcpm () {
     git commit -m "$1"
-    git push -u origin master
+    git push -u origin main
 }
 
 ## "generic update file"
@@ -147,7 +142,7 @@ guf () {
     local file=$1
     git add $file
     git commit -m "Update ${file}"
-    git push -u origin master
+    git push -u origin main
 }
 
 ### github stuff ###
@@ -169,7 +164,7 @@ empty_gh() { # [NAME_OF_REPO]
     git add ^.*
     git commit -m 'Initial commit.'
     git remote add origin git@github.com:${ghuser}/${repo}.git
-    git push -u origin master
+    git push -u origin main
 }
 
 ## new_gh [DIRECTORY]
@@ -198,7 +193,7 @@ new_gh() { # [DIRECTORY]
     git add ^.*
     git commit -m 'Initial commit.'
     git remote add origin git@github.com:${ghuser}/${repo}.git
-    git push -u origin master
+    git push -u origin main
 }
 
 ## make a generic gitignore
@@ -362,3 +357,25 @@ uz () { # [archive] [dir]
 # Y ---------------------------------- Y --------------------------------- Y #
 
 # Z ---------------------------------- Z --------------------------------- Z #
+
+zshupdate () {
+    local currFolder=$(pwd)
+    # Update Oh My Zsh
+    omz update
+    # Update Plugins
+    printf "\n${vColorFgLightPurple}%s${vColorReset}\n" "#######################"
+    printf "${vColorFgLightPurple}%s${vColorReset}\n" "Updating custom plugins"
+    cd $ZSH/custom/plugins
+
+    for plugin in */; do
+        if [ -d "$plugin/.git" ]; then
+            printf "Plugin: ${vColorFgYellow}%s${vColorReset}\n" "${plugin%/}"
+            git -C "$plugin" fetch --all
+            git -C "$plugin" pull
+        fi
+    done
+
+    cd "$currFolder"
+}
+
+# Company specific ----------- Company specific ----------- Company specific #

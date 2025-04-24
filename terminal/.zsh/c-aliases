@@ -11,7 +11,7 @@ alias hclear='rm $HISTFILE'
 
 # Git ------------------------------ Git ------------------------------- Git #
 ## for more take a look to https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git
-alias gfp='git fetch --all --tags --prune --prune-tags'
+alias gfp='git fetch --all --tags --prune --prune-tags --jobs=10'
 
 # Check if git is enabled for zsh in $plugins, else use own commands
 if [[ ! "$plugins" =~ "git" ]]; then
